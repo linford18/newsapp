@@ -1,8 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
 require('dotenv').config();
 const fs = require('fs');
-// const infuraId = fs.readFileSync(".infuraid").toString().trim() || "";
-
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {
@@ -10,9 +8,7 @@ module.exports = {
       chainId: 1337
     },
     mumbai: {
-      // Infura
-      // url: `https://polygon-mumbai.infura.io/v3/${infuraId}`
-      url: "https://speedy-nodes-nyc.moralis.io/f2976618812cdafd40fddf6c/polygon/mumbai",
+      url: `https://speedy-nodes-nyc.moralis.io/${process.env.moralisId}/polygon/mumbai`,
       accounts: [process.env.privateKey]
     },
     /*

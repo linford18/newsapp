@@ -27,26 +27,9 @@ export default function CreatorDashboard() {
     const signer = provider.getSigner()
     const web3 = new Web3()
 
-    /* next, create the item */
-    // const price = ethers.utils.parseUnits(formInput.price, 'gwei')
     let contract = new ethers.Contract(marketplaceAddress, NewsFeed.abi, signer)
-    // const contract = new ethers.Contract(marketplaceAddress, NewsFeed.abi, signer)
-    // const provider = new ethers.providers.JsonRpcProvider("https://speedy-nodes-nyc.moralis.io/f2976618812cdafd40fddf6c/polygon/mumbai")
-    // const signer = provider.getSigner()
-    // const contract = new ethers.Contract(marketplaceAddress, NewsFeed.abi, signer)
-
-
-    // const web3Modal = new Web3Modal()
-    // const connection = await web3Modal.connect()
-    // const provider = new ethers.providers.Web3Provider(connection)
-    // const signer = provider.getSigner()
-
-    // const contract = new ethers.Contract(marketplaceAddress, NewsFeed.abi, signer)
-    // let transaction = await contract.deposit( { value: 1 })
-    // await transaction.wait()
     let balanceval = await contract.balance()
     console.log(balanceval)
-    // balanceval = ethers.utils.formatUnits(web3.utils.toBN(balanceval).toString(), 'eth')
     balanceval = web3.utils.fromWei(balanceval.toString(), 'ether')
     setBalance(balanceval)
     setLoadingState('loaded') 
@@ -61,26 +44,12 @@ export default function CreatorDashboard() {
     const signer = provider.getSigner()
     const web3 = new Web3()
 
-    /* next, create the item */
-    // const price = ethers.utils.parseUnits(formInput.price, 'gwei')
     let contract = new ethers.Contract(marketplaceAddress, NewsFeed.abi, signer)
-    // const contract = new ethers.Contract(marketplaceAddress, NewsFeed.abi, signer)
-    // const provider = new ethers.providers.JsonRpcProvider("https://speedy-nodes-nyc.moralis.io/f2976618812cdafd40fddf6c/polygon/mumbai")
-    // const signer = provider.getSigner()
-    // const contract = new ethers.Contract(marketplaceAddress, NewsFeed.abi, signer)
 
-
-    // const web3Modal = new Web3Modal()
-    // const connection = await web3Modal.connect()
-    // const provider = new ethers.providers.Web3Provider(connection)
-    // const signer = provider.getSigner()
-
-    // const contract = new ethers.Contract(marketplaceAddress, NewsFeed.abi, signer)
     let transaction = await contract.deposit( { value: Web3.utils.toWei('0.1', 'ether') })
     await transaction.wait()
     let balanceval = await contract.balance()
     balanceval = web3.utils.fromWei(balanceval.toString(), 'ether')
-    // balanceval = ethers.utils.formatUnits(web3.utils.BN(balanceval).toString(), 'eth')
     setBalance(balanceval)
     setLoadingState('loaded') 
     console.log(balanceval)
@@ -98,11 +67,9 @@ export default function CreatorDashboard() {
     // const price = ethers.utils.parseUnits(formInput.price, 'gwei')
     let contract = new ethers.Contract(marketplaceAddress, NewsFeed.abi, signer)
     let transaction = await contract.withdraw( Web3.utils.toWei('0.1', 'ether') )
-    // let transaction = await contract.deposit( { value: 1000000000000000 })
     await transaction.wait()
     let balanceval = await contract.balance()
     balanceval = web3.utils.fromWei(balanceval.toString(), 'ether')
-    // balanceval = ethers.utils.formatUnits(balanceval.toString(), 'eth')
     setBalance(balanceval)
     setLoadingState('loaded') 
     console.log(balanceval)
