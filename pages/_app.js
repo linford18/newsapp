@@ -28,14 +28,20 @@ function MyApp({ Component, pageProps }) {
               Dashboard
             </a>
           </Link>
-          <Link href="/upgrade-superfluid">
-            <a className="mr-6 text-pink-500">
-              Upgrade Superfluid
-            </a>
-          </Link>
+          
           <Link href="/alchemy-nft">
             <a className="mr-6 text-pink-500">
               Alchemy -Articles
+            </a>
+          </Link>
+          <Link href="/video-upload">
+            <a className="mr-6 text-pink-500">
+              Livepeer -Upload
+            </a>
+          </Link>
+          <Link href="/video-view">
+            <a className="mr-6 text-pink-500">
+              Livepeer - View
             </a>
           </Link>
         </div>

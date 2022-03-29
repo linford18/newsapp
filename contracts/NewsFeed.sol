@@ -15,6 +15,11 @@ contract NewsFeed is ERC721URIStorage, SimpleBank {
     address payable owner;
     mapping(uint256 => NewsFeedItem) private idToNewsFeed;
 
+
+    uint256 _addIds;
+    Counters.Counter private _totalAdds;
+    mapping(uint256 => AddsFeedItem) private idToAddsFeed;
+
     struct NewsFeedItem {
       uint256 tokenId;
       address payable author;
@@ -35,8 +40,25 @@ contract NewsFeed is ERC721URIStorage, SimpleBank {
       uint256 viwes
     );
 
+    struct AddsFeedItem {
+      uint256 tokenId;
+      address payable author;
+      address payable owner;
+      string name;
+      uint256 viwes;
+    }
+
+    event AddsFeedCreated (
+      uint256 indexed tokenId,
+      address author,
+      address  owner,
+      string name,
+      uint256 viwes
+    );
+
     constructor() ERC721("Metaverse Tokens", "METT") {
       owner = payable(msg.sender);
+      _addIds =20;
     }
 
 
@@ -82,7 +104,7 @@ contract NewsFeed is ERC721URIStorage, SimpleBank {
       );
     }
 
-    /* Returns all unsold market items */
+    /* Returns all news articles */
     function fetchNewsFeeds() public view returns (NewsFeedItem[] memory) {
       uint itemCount = _tokenIds.current();
       uint currentIndex = 0;
@@ -104,7 +126,7 @@ contract NewsFeed is ERC721URIStorage, SimpleBank {
       return articlePrice;
     }
 
-    /* Returns only items that a user has purchased */
+    /* Returns only items that a user has published */
     function fetchMyNewsFeeds() public view returns (NewsFeedItem[] memory) {
       uint totalItemCount = _tokenIds.current();
       uint itemCount = 0;
@@ -135,6 +157,70 @@ contract NewsFeed is ERC721URIStorage, SimpleBank {
 
     function getCurrentAddress() public view returns (address){
       return msg.sender;
+    }
+
+    function createAdd(string memory tokenURI,string memory addName) public payable returns (uint) {
+      _addIds++;
+
+      uint256 newTokenId = _addIds;
+
+      _mint(msg.sender, newTokenId);
+      _setTokenURI(newTokenId, tokenURI);
+      createAdsItem(newTokenId,addName);
+      _totalAdds.increment();
+      return newTokenId;
+    }
+  function createAdsItem(
+      uint256 tokenId,
+      string memory article
+    ) private {
+      // require(price > 0, "Price must be at least 1 wei");
+      //require(msg.value == articlePrice, "Price must be equal to articlePrice");
+
+      idToAddsFeed[tokenId] =  AddsFeedItem(
+        tokenId,
+        payable(msg.sender),
+        payable(address(this)),
+        article,
+        0
+      );
+
+      _transfer(msg.sender, address(this), tokenId);
+      emit AddsFeedCreated(
+        tokenId,
+        msg.sender,
+        address(this),
+        article,
+        0
+      );
+    }
+
+    /* Returns all advertisements */
+    function fetchAdds() public view returns (AddsFeedItem[] memory) {
+      uint itemCount = _addIds;
+      uint currentIndex = 0;
+
+      AddsFeedItem[] memory items = new AddsFeedItem[](itemCount);
+      for (uint i = 20; i < itemCount; i++) {
+        if (idToAddsFeed[i + 1].owner == address(this)) {
+          uint currentId = i + 1;
+          AddsFeedItem storage currentItem = idToAddsFeed[currentId];
+          items[currentIndex] = currentItem;
+          currentIndex += 1;
+        }
+      }
+      return items;
+    }
+
+    function fetchAddsOwner(string memory name) public view returns (address) {
+      uint itemCount = _addIds;
+
+      for (uint i = 20; i < itemCount; i++) {
+        if (keccak256(abi.encodePacked(idToAddsFeed[i + 1].name)) == keccak256(abi.encodePacked(name)) ) {
+          return idToAddsFeed[i + 1].author;
+        }
+      }
+      return owner;
     }
 
 }
